@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Error - Critical Alert</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            cursor: none;
+        }
+
+        #terminal {
+            width: 80%;
+            height: 60vh;
+            overflow: hidden;
+            border: 1px solid #0f0;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            background: rgba(0, 20, 0, 0.9);
+        }
+
+        .error { color: #ff0000; font-weight: bold; }
+        .warning { color: #ffff00; }
+
+        /* Animasi Glitch Merah */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 0, 0, 0.1);
+            z-index: 999;
+            pointer-events: none;
+            animation: flash 0.1s infinite;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Pesan Pop up Palsu */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #eee;
+            color: #000;
+            padding: 20px;
+            border: 2px solid #555;
+            box-shadow: 10px 10px 0px #000;
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onclick="startPrank()">
+
+    <div id="overlay"></div>
+
+    <div id="terminal">
+        <div id="output">C:\> Klik di mana saja untuk memindai sistem...</div>
+    </div>
+
+    <div id="popup" class="popup">
+        <h3 style="background: darkblue; color: white; margin: -20px -20px 20px -20px; padding: 5px;">System Alert</h3>
+        <p><strong>WARNING!</strong><br>Virus terdeteksi sedang menghapus folder C:/Windows/System32</p>
+        <p>Progres: <span id="percent">0</span>%</p>
+        <button disabled>Batalkan</button>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const overlay = document.getElementById('overlay');
+        const popup = document.getElementById('popup');
+        const percent = document.getElementById('percent');
+
+        const logs = [
+            "> Mengakses kernel sistem...",
+            "> Menembus firewall keamanan...",
+            "> [ERROR] Akses ditolak! Mencoba exploit...",
+            "> Exploit berhasil! Mendapatkan akses root.",
+            "> Mengunduh data pribadi ke server Rusia...",
+            "> Menghapus file System32...",
+            "> Mematikan kipas CPU agar overheat...",
+            "> Mengirim riwayat chat ke semua kontak...",
+            "> WARNING: PERANGKAT INI SEGERA MELEDAK!"
+        ];
+
+        let i = 0;
+        let p = 0;
+
+        function startPrank() {
+            // Sembunyikan instruksi klik
+            output.innerHTML = "> Memulai pemindaian sistem...<br>";
+            
+            // Loop teks terminal
+            const interval = setInterval(() => {
+                if (i < logs.length) {
+                    const line = document.createElement('div');
+                    if (logs[i].includes("ERROR")) line.className = "error";
+                    if (logs[i].includes("WARNING")) line.className = "warning";
+                    line.innerHTML = logs[i];
+                    output.appendChild(line);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    triggerVirus();
+                }
+            }, 800);
+        }
+
+        function triggerVirus() {
+            // Munculkan layar merah kedap-kedip
+            overlay.style.display = 'block';
+            
+            // Munculkan popup palsu
+            popup.style.display = 'block';
+
+            // Jalankan angka persentase palsu
+            const progress = setInterval(() => {
+                if (p < 100) {
+                    p++;
+                    percent.innerText = p;
+                } else {
+                    clearInterval(progress);
+                    output.innerHTML = "<h1 class='error'>SISTEM HANCUR!</h1>";
+                }
+            }, 50);
+        }
+    </script>
+</body>
+</html>
